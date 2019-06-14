@@ -1,0 +1,190 @@
+[
+  {
+    "type": "array_expression",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "command_expression",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "double_quote_string",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "flat_array_expression",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "hashtable_entry",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "hashtable_expression",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "non_type_attribute",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "param_block",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "param_block_variable",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "parameter",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "pipeline_statement",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "property_name",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "scriptblock",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "source_file",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "type_expr",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "variable",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": "\r\n",
+    "named": false
+  },
+  {
+    "type": "\n",
+    "named": false
+  },
+  {
+    "type": ";",
+    "named": false
+  },
+  {
+    "type": "=",
+    "named": false
+  },
+  {
+    "type": "|",
+    "named": false
+  },
+  {
+    "type": "&",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": "$(",
+    "named": false
+  },
+  {
+    "type": "@(",
+    "named": false
+  },
+  {
+    "type": "@{",
+    "named": false
+  },
+  {
+    "type": "$",
+    "named": false
+  },
+  {
+    "type": "^",
+    "named": false
+  },
+  {
+    "type": "?",
+    "named": false
+  },
+  {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "]",
+    "named": false
+  },
+  {
+    "type": "[]",
+    "named": false
+  },
+  {
+    "type": "number_expr",
+    "named": true
+  },
+  {
+    "type": "single_quote_string",
+    "named": true
+  },
+  {
+    "type": "\"\"",
+    "named": false
+  },
+  {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "bareword_string",
+    "named": true
+  },
+  {
+    "type": "comment",
+    "named": true
+  }
+]

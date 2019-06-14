@@ -1,0 +1,28 @@
+<View>
+  <Name>Microsoft.PowerShell.Commands.GenericMeasureInfo</Name>
+  <TableControl>
+    <TableHeaders>
+      <TableColumnHeader>
+        <Width>16</Width>
+      </TableColumnHeader>
+      <TableColumnHeader>
+        <Width>16</Width>
+      </TableColumnHeader>
+    </TableHeaders>
+    <TableRowEntries>
+      <TableRowEntry>
+        <TableColumnItems>
+          <TableColumnItem>
+            <PropertyName>LCID</PropertyName>
+          </TableColumnItem>
+          <TableColumnItem>
+            <PropertyName>Name</PropertyName>
+          </TableColumnItem>
+          <TableColumnItem>
+            <PropertyName>DisplayName</PropertyName>
+          </TableColumnItem>
+        </TableColumnItems>
+      </TableRowEntry>
+    </TableRowEntries>
+  </TableControl>
+</View>
