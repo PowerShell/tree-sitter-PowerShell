@@ -21,74 +21,135 @@ module.exports = grammar({
       ),
     ),
 
-    scriptblock: $ => seq(
-      '{',
-      optional($.param_block),
-      seq(
-        $._statement,
-        repeat(
-          seq(
-            $._terminator,
-            $._statement
-          )
-        ),
-        optional($._terminator)
-      ),
-      '}'
-    ),
-
-    param_block: $ => seq(
-      /(p|P)(a|A)(r|R)(a|A)(m|M)/,
-      '(',
-      optional(
-        seq(
-          $.param_block_variable,
-          repeat(
-            seq(
-              ',',
-              $.param_block_variable
-            )
-          ),
-          optional(',')
-        )
-      ),
-      ')'
-    ),
-
-    param_block_variable: $ => seq(
-      repeat(
-        seq(
-          $._attribute,
-          optional($._newlines)
-        )
-      ),
-      $.variable
-    ),
-
-    _statement: $ => choice(
-      $.pipeline_statement
-    ),
-
     _newline: $ => choice(
       '\r\n',
       '\n'
     ),
 
-    _newlines: $ => repeat1($._newline),
-
     _terminator: $ => choice(
-      ';',
-      $._newline
+      seq(
+        ';',
+        repeat($._newline)
+      ),
+      repeat1($._newline)
+    ),
+
+    _statement: $ => choice(
+      $._expression_statement,
+      $._definition_statement
+    ),
+
+    _definition_statement: $ => choice(
+      $.function_definition,
+      $.filter_definition,
+      $.class_definition,
+      $.enum_definition
+    ),
+
+    function_definition: $ => seq(
+      /function/i,
+      /[_a-z+][_a-z0-9+]*/i,
+      $.scriptblock
+    ),
+
+    filter_definition: $ => seq(
+      /filter/i,
+      /[_a-z+][_a-z0-9+]*/i,
+      $.scriptblock
+    ),
+
+    class_definition: $ => seq(
+      /class/i,
+      repeat($._newline),
+      '{',
+      repeat(
+        seq(
+          repeat($._newline),
+          choice(
+            $.class_property,
+            $.class_method
+          )
+        )
+      ),
+      repeat($._newline),
+      '}'
+    ),
+
+    class_property: $ => seq(
+      optional($.type_expr),
+      $._newline,
+      $.simple_variable
+    ),
+
+    class_method: $ => seq(
+      optional($.type_expr),
+      $.bareword_string,
+      '(',
+      repeat($._newline),
+      optional(
+        seq(
+          $.class_parameter,
+          repeat(
+            seq(
+              ',',
+              repeat($._newline),
+              $.class_parameter
+            )
+          )
+        )
+      ),
+      ')',
+      repeat($._newline),
+      $.class_method_body
+    ),
+
+    class_parameter: $ => seq(
+      optional($.type_expr),
+      $.simple_variable
+    ),
+
+    class_method_body: $ => seq(
+      '{',
+      repeat(
+        seq(
+          repeat($._newline),
+          $._statement
+        )
+      ),
+      repeat($._newline),
+      '}'
+    ),
+
+    enum_definition: $ => seq(
+      /enum/i,
+      repeat($._newline),
+      '{',
+      repeat(
+        seq(
+          repeat($._newline),
+          $.bareword_string
+        )
+      ),
+      repeat($._newline),
+      '}'
+    ),
+
+    _expression_statement: $ => choice(
+      $.assignment_statement,
+      $.pipeline_statement,
+      $.if_statement,
+      $.while_statement,
+      $.do_while_statement
+    ),
+
+    assignment_statement: $ => seq(
+      $._attributed_variable,
+      '=',
+      repeat($._newline),
+      $._expression_statement,
     ),
 
     pipeline_statement: $ => seq(
-      optional(
-        seq(
-          $._attributed_variable,
-          '=',
-          optional($._newlines)
-        )
-      ),
       $._pipeline_expression,
       repeat(
         seq(
@@ -99,6 +160,105 @@ module.exports = grammar({
       )
     ),
 
+    if_statement: $ => seq(
+      /if/i,
+      repeat($._newline),
+      '(',
+      repeat($._newline),
+      $.pipeline_statement,
+      ')',
+      repeat($._newline),
+      '{',
+      repeat(
+        seq(
+          repeat($._newline),
+          $._statement,
+          $._terminator
+        ),
+      ),
+      repeat($._newline),
+      '}',
+      repeat(
+        seq(
+          repeat($._newline),
+          /elseif/i,
+          repeat($._newline),
+          '(',
+          repeat($._newline),
+          $.pipeline_statement,
+          repeat($._newline),
+          ')',
+          repeat($._newline),
+          '{',
+          repeat(
+            seq(
+              repeat($._newline),
+              $._statement,
+              $._terminator
+            ),
+          ),
+          repeat($._newline),
+          '}'
+        )
+      ),
+      optional(
+        seq(
+          /else/i,
+          repeat($._newline),
+          '{',
+          repeat(
+            seq(
+              repeat($._newline),
+              $._statement,
+              $._terminator
+            ),
+          ),
+          repeat($._newline),
+          '}'
+        )
+      )
+    ),
+
+    while_statement: $ => seq(
+      /while/i,
+      repeat($._newline),
+      '(',
+      repeat($._newline),
+      $.pipeline_statement,
+      repeat($._newline),
+      ')',
+      repeat($._newline),
+      '{',
+      repeat(
+        seq(
+          repeat($._newline),
+          $._statement
+        ),
+      ),
+      repeat($._newline),
+      '}'
+    ),
+
+    do_while_statement: $ => seq(
+      /do/i,
+      repeat($._newline),
+      '{',
+      repeat($._newline),
+      repeat(
+        seq(
+          $._statement,
+          $._terminator
+        ),
+      ),
+      '}',
+      repeat($._newline),
+      /while/i,
+      repeat($._newline),
+      '(',
+      $.pipeline_statement,
+      ')'
+    ),
+
     command_expression: $ => seq(
       choice(
         $.bareword_string,
@@ -107,7 +267,7 @@ module.exports = grammar({
     ),
 
     parameter: $ => seq(
-      /-[a-zA-Z_][a-zA-Z0-9_]*/,
+      /-[a-z_][a-z0-9_]*/i,
       optional(
         seq(
           ':',
@@ -134,6 +294,52 @@ module.exports = grammar({
       $.array_expression
     ),
 
+    scriptblock: $ => seq(
+      '{',
+      optional($.param_block),
+      repeat($._newline),
+      seq(
+        $._statement,
+        repeat(
+          seq(
+            $._terminator,
+            $._statement
+          )
+        ),
+        optional($._terminator)
+      ),
+      '}'
+    ),
+
+    param_block: $ => seq(
+      /param/i,
+      '(',
+      optional(
+        seq(
+          $.param_block_variable,
+          repeat(
+            seq(
+              ',',
+              $.param_block_variable
+            )
+          ),
+          optional(',')
+        )
+      ),
+      ')'
+    ),
+
+    param_block_variable: $ => seq(
+      repeat(
+        seq(
+          $._attribute,
+          repeat($._newline)
+        )
+      ),
+      $.simple_variable
+    ),
+
+
     _pipeline_expression: $ => choice(
       $._expression,
       $.command_expression
@@ -151,17 +357,17 @@ module.exports = grammar({
 
     flat_array_expression: $ => seq(
       '@(',
-      repeat($._terminator),
+      repeat($._newline),
       optional(
         seq(
           $._expression,
           repeat(
             seq(
-              repeat1($._terminator),
+              $._terminator,
               $._expression
             )
           ),
-          repeat($._terminator)
+          repeat($._newline)
         )
       ),
       ')'
@@ -169,13 +375,13 @@ module.exports = grammar({
 
     hashtable_expression: $ => seq(
       '@{',
-      optional($._newlines),
+      repeat($._newline),
       optional(
         seq(
           $.hashtable_entry,
           repeat(
             seq(
-              repeat1($._terminator),
+              $._terminator,
               $.hashtable_entry
             )
           ),
@@ -188,7 +394,7 @@ module.exports = grammar({
     hashtable_entry: $ => seq(
       $.property_name,
       '=',
-      optional($._newlines),
+      repeat($._newline),
       $._expression
     ),
 
@@ -204,22 +410,21 @@ module.exports = grammar({
     ),
 
     variable: $ => seq(
-      '$',
       choice(
-        $._varname_simple,
-        $._varname_braced,
-        $._varname_special
+        $.simple_variable,
+        $._braced_variable,
+        $._special_variable
       )
     ),
 
-    _varname_simple: $ => /[a-zA-Z0-9_]+/,
+    simple_variable: $ => /\$[a-z0-9_:]+/i,
 
-    _varname_braced: $ => /{[^}]+}/,
+    _braced_variable: $ => /\${[^}]+}/,
 
-    _varname_special: $ => choice(
-      '$',
-      '^',
-      '?'
+    _special_variable: $ => choice(
+      '$$',
+      '$^',
+      '$?'
     ),
 
     type_expr: $ => seq(
@@ -234,7 +439,7 @@ module.exports = grammar({
       $._typename_generic
     ),
 
-    _typename_simple: $ => /[A-Za-z_][A-Za-z0-9_.]*/,
+    _typename_simple: $ => /[a-z_][a-z0-9_.]*/i,
 
     _typename_array: $ => seq(
       $._typename,
@@ -275,7 +480,7 @@ module.exports = grammar({
       $.non_type_attribute
     ),
 
-    number_expr: $ => /(\d+|\d*\.\d+((e|E)\d+))(u|U)?(l|L)?((k|K|m|M|g|G|t|T)(b|B))?/,
+    number_expr: $ => /(\d+|\d*\.\d+(e\d+))u?l?((k|m|g|t)b)?/i,
 
     _string_expr: $ => choice(
       $.single_quote_string,
