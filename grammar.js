@@ -61,23 +61,27 @@ module.exports = grammar({
     class_definition: $ => seq(
       /class/i,
       repeat($._newline),
+      /[a-z_][a-z0-9_]+/,
+      repeat($._newline),
       '{',
       repeat(
         seq(
-          repeat($._newline),
           choice(
-            $.class_property,
+            seq($.class_property, $._terminator),
             $.class_method
           )
         )
       ),
-      repeat($._newline),
       '}'
     ),
 
     class_property: $ => seq(
-      optional($.type_expr),
-      $._newline,
+      optional(
+        seq(
+          $.type_expr,
+          repeat($._newline)
+        )
+      ),
       $.simple_variable
     ),
 
@@ -112,16 +116,17 @@ module.exports = grammar({
       '{',
       repeat(
         seq(
-          repeat($._newline),
-          $._statement
+          $._statement,
+          $._terminator
         )
       ),
-      repeat($._newline),
       '}'
     ),
 
     enum_definition: $ => seq(
       /enum/i,
+      repeat($._newline),
+      /[a-z_][a-z0-9_]+/,
       repeat($._newline),
       '{',
       repeat(
@@ -171,16 +176,13 @@ module.exports = grammar({
       '{',
       repeat(
         seq(
-          repeat($._newline),
           $._statement,
           $._terminator
         ),
       ),
-      repeat($._newline),
       '}',
       repeat(
         seq(
-          repeat($._newline),
           /elseif/i,
           repeat($._newline),
           '(',
@@ -192,12 +194,10 @@ module.exports = grammar({
           '{',
           repeat(
             seq(
-              repeat($._newline),
               $._statement,
               $._terminator
             ),
           ),
-          repeat($._newline),
           '}'
         )
       ),
@@ -208,12 +208,10 @@ module.exports = grammar({
           '{',
           repeat(
             seq(
-              repeat($._newline),
               $._statement,
               $._terminator
             ),
           ),
-          repeat($._newline),
           '}'
         )
       )
@@ -231,11 +229,10 @@ module.exports = grammar({
       '{',
       repeat(
         seq(
-          repeat($._newline),
-          $._statement
+          $._statement,
+          $._terminator
         ),
       ),
-      repeat($._newline),
       '}'
     ),
 

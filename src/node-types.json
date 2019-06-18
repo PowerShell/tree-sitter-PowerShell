@@ -5,7 +5,42 @@
     "fields": {}
   },
   {
+    "type": "assignment_statement",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "class_definition",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "class_method",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "class_method_body",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "class_parameter",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "class_property",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "command_expression",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "do_while_statement",
     "named": true,
     "fields": {}
   },
@@ -15,7 +50,22 @@
     "fields": {}
   },
   {
+    "type": "enum_definition",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "filter_definition",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "flat_array_expression",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "function_definition",
     "named": true,
     "fields": {}
   },
@@ -26,6 +76,11 @@
   },
   {
     "type": "hashtable_expression",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "if_statement",
     "named": true,
     "fields": {}
   },
@@ -80,6 +135,23 @@
     "fields": {}
   },
   {
+    "type": "while_statement",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "\r\n",
+    "named": false
+  },
+  {
+    "type": "\n",
+    "named": false
+  },
+  {
+    "type": ";",
+    "named": false
+  },
+  {
     "type": "{",
     "named": false
   },
@@ -97,18 +169,6 @@
   },
   {
     "type": ")",
-    "named": false
-  },
-  {
-    "type": "\r\n",
-    "named": false
-  },
-  {
-    "type": "\n",
-    "named": false
-  },
-  {
-    "type": ";",
     "named": false
   },
   {
@@ -140,15 +200,19 @@
     "named": false
   },
   {
-    "type": "$",
+    "type": "simple_variable",
+    "named": true
+  },
+  {
+    "type": "$$",
     "named": false
   },
   {
-    "type": "^",
+    "type": "$^",
     "named": false
   },
   {
-    "type": "?",
+    "type": "$?",
     "named": false
   },
   {
@@ -177,6 +241,10 @@
   },
   {
     "type": "\"",
+    "named": false
+  },
+  {
+    "type": "$",
     "named": false
   },
   {
