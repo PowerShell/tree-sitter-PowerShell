@@ -260,7 +260,26 @@ module.exports = grammar({
       choice(
         $.bareword_string,
         seq('&', $.property_name)
+      ),
+      repeat(
+        choice(
+          $.command_parameter,
+          $.command_argument
+        )
       )
+    ),
+
+    command_parameter: $ => /-[a-zA-Z_-]+/i,
+
+    command_argument: $ => choice(
+      $.bareword_string,
+      $.number_expr,
+      $._string_expr,
+      $.variable,
+      $.scriptblock,
+      $.hashtable_expression,
+      $.subpipeline,
+      $.subexpression
     ),
 
     parameter: $ => seq(
@@ -282,8 +301,20 @@ module.exports = grammar({
       $.flat_array_expression,
       $.hashtable_expression,
       $.scriptblock,
-      seq('(', $._pipeline_expression, ')'),
-      seq('$(', $.pipeline_statement, ')')
+      $.subpipeline,
+      $.subexpression
+    ),
+
+    subpipeline: $ => seq(
+      '(',
+      $._pipeline_expression,
+      ')'
+    ),
+
+    subexpression: $ => seq(
+      '$(',
+      $._statement,
+      ')'
     ),
 
     _expression: $ => choice(
@@ -310,19 +341,22 @@ module.exports = grammar({
 
     param_block: $ => seq(
       /param/i,
+      repeat($._newline),
       '(',
       optional(
         seq(
+          repeat($._newline),
           $.param_block_variable,
           repeat(
             seq(
               ',',
+              repeat($._newline),
               $.param_block_variable
             )
           ),
-          optional(',')
         )
       ),
+      repeat($._newline),
       ')'
     ),
 
@@ -414,7 +448,7 @@ module.exports = grammar({
       )
     ),
 
-    simple_variable: $ => /\$[a-z0-9_:]+/i,
+    simple_variable: $ => /\$[a-zA-Z0-9_:]+/i,
 
     _braced_variable: $ => /\${[^}]+}/,
 
@@ -436,7 +470,7 @@ module.exports = grammar({
       $._typename_generic
     ),
 
-    _typename_simple: $ => /[a-z_][a-z0-9_.]*/i,
+    _typename_simple: $ => /[a-zA-Z_][a-zA-Z0-9_.]*/i,
 
     _typename_array: $ => seq(
       $._typename,

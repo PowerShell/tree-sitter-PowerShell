@@ -11,6 +11,11 @@ $sb = {
     $y = 7
 }
 
+if ($y)
+{
+    Write-Host "Hello" -Verbose
+}
+
 # A comment
 $d = @{
     $y = 111; duck = "Hello "

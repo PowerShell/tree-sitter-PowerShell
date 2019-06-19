@@ -35,6 +35,11 @@
     "fields": {}
   },
   {
+    "type": "command_argument",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "command_expression",
     "named": true,
     "fields": {}
@@ -125,6 +130,16 @@
     "fields": {}
   },
   {
+    "type": "subexpression",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "subpipeline",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "type_expr",
     "named": true,
     "fields": {}
@@ -182,6 +197,10 @@
   {
     "type": "&",
     "named": false
+  },
+  {
+    "type": "command_parameter",
+    "named": true
   },
   {
     "type": ":",
