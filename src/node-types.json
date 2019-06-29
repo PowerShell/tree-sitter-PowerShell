@@ -55,6 +55,16 @@
     "fields": {}
   },
   {
+    "type": "else_statement",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "elseif_statement",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "enum_definition",
     "named": true,
     "fields": {}

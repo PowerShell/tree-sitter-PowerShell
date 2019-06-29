@@ -126,16 +126,18 @@ module.exports = grammar({
     enum_definition: $ => seq(
       /enum/i,
       repeat($._newline),
-      /[a-z_][a-z0-9_]+/,
+      /[a-zA-Z_][a-zA-Z0-9_]+/,
       repeat($._newline),
       '{',
+      repeat($._newline),
+      $.bareword_string,
       repeat(
         seq(
-          repeat($._newline),
-          $.bareword_string
+          $._terminator,
+          $.bareword_string,
         )
       ),
-      repeat($._newline),
+      optional($._terminator),
       '}'
     ),
 
@@ -181,40 +183,40 @@ module.exports = grammar({
         ),
       ),
       '}',
+      repeat($.elseif_statement),
+      optional($.else_statement)
+    ),
+
+    elseif_statement: $ => seq(
+      /elseif/i,
+      repeat($._newline),
+      '(',
+      repeat($._newline),
+      $.pipeline_statement,
+      repeat($._newline),
+      ')',
+      repeat($._newline),
+      '{',
       repeat(
         seq(
-          /elseif/i,
-          repeat($._newline),
-          '(',
-          repeat($._newline),
-          $.pipeline_statement,
-          repeat($._newline),
-          ')',
-          repeat($._newline),
-          '{',
-          repeat(
-            seq(
-              $._statement,
-              $._terminator
-            ),
-          ),
-          '}'
-        )
+          $._statement,
+          $._terminator
+        ),
       ),
-      optional(
+      '}'
+    ),
+
+    else_statement: $ => seq(
+      /else/i,
+      repeat($._newline),
+      '{',
+      repeat(
         seq(
-          /else/i,
-          repeat($._newline),
-          '{',
-          repeat(
-            seq(
-              $._statement,
-              $._terminator
-            ),
-          ),
-          '}'
-        )
-      )
+          $._statement,
+          $._terminator
+        ),
+      ),
+      '}'
     ),
 
     while_statement: $ => seq(

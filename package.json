@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "generate": "tree-sitter generate",
+    "test": "tree-sitter test",
+    "parse": "tree-sitter parse",
+    "parse-debug": "tree-sitter parse -d",
+    "start": "npm run generate && npm run parse"
   },
   "author": "",
   "license": "ISC",

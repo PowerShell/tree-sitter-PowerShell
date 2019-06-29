@@ -13,11 +13,22 @@ $sb = {
 
 if ($y)
 {
-    Write-Host "Hello" -Verbose
+    Write-Host "If" -Verbose
+} elseif($foo) {
+    
+} else {
+    Write-Host "Else" -Verbose
 }
 
 # A comment
 $d = @{
     $y = 111; duck = "Hello "
     '7 nice things' = 1,@{}
+}
+
+${            } = "asdf"
+
+enum EnumName {
+    Foo;
+    Bar
 }
