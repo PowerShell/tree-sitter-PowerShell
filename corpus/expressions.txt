@@ -206,6 +206,30 @@ Brace-variable substituted string
       (variable))))
 
 ===
+Escaped variable in double quoted string
+===
+
+"In the `$money"
+
+---
+
+(program
+  (pipeline_statement
+    (double_quote_string)))
+
+===
+Escaped brace variable in double quoted string
+===
+
+"In the `${money}"
+
+---
+
+(program
+  (pipeline_statement
+    (double_quote_string)))
+
+===
 Basic hashtable
 ===
 

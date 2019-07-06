@@ -542,8 +542,7 @@ module.exports = grammar({
         '"',
         repeat(
           choice(
-            /[^"$]+/,
-            '`$',
+            /([^"$`]|`\$|`)+/,
             $.variable
           )
         ),

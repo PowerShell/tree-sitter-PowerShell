@@ -1836,11 +1836,7 @@
               "members": [
                 {
                   "type": "PATTERN",
-                  "value": "[^\"$]+"
-                },
-                {
-                  "type": "STRING",
-                  "value": "`$"
+                  "value": "([^\"$`]|`\\$|`)+"
                 },
                 {
                   "type": "SYMBOL",
