@@ -1,7 +1,7 @@
 {
   "name": "PowerShell",
   "rules": {
-    "source_file": {
+    "program": {
       "type": "SEQ",
       "members": [
         {
@@ -17,39 +17,42 @@
           ]
         },
         {
-          "type": "SEQ",
+          "type": "CHOICE",
           "members": [
             {
               "type": "SYMBOL",
               "name": "_statement"
             },
             {
-              "type": "REPEAT",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_terminator"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_statement"
-                  }
-                ]
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_terminator"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_statement"
               }
+            ]
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_terminator"
             },
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_terminator"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
+              "type": "BLANK"
             }
           ]
         }
@@ -1723,8 +1726,77 @@
       ]
     },
     "number_expr": {
-      "type": "PATTERN",
-      "value": "(\\d+|\\d*\\.\\d+(e\\d+))u?l?((k|m|g|t)b)?"
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 3,
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "\\d+"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\d*\\.\\d+"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "(e|E)\\d+"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "u|U"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "l|L"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "(k|K|m|M|g|G|t|T)(b|B)"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          ]
+        }
+      }
     },
     "_string_expr": {
       "type": "CHOICE",
@@ -1740,77 +1812,109 @@
       ]
     },
     "single_quote_string": {
-      "type": "PATTERN",
-      "value": "'[^']*'"
+      "type": "PREC",
+      "value": 2,
+      "content": {
+        "type": "PATTERN",
+        "value": "'[^']*'"
+      }
     },
     "double_quote_string": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "\"\""
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "\""
-            },
-            {
-              "type": "REPEAT",
-              "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "PATTERN",
-                    "value": "[^\"$]+"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "variable"
-                  }
-                ]
-              }
-            },
-            {
+      "type": "PREC",
+      "value": 2,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "\""
+          },
+          {
+            "type": "REPEAT",
+            "content": {
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "STRING",
-                  "value": "$"
+                  "type": "PATTERN",
+                  "value": "[^\"$]+"
                 },
                 {
-                  "type": "BLANK"
+                  "type": "STRING",
+                  "value": "`$"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "variable"
                 }
               ]
-            },
-            {
-              "type": "STRING",
-              "value": "\""
             }
-          ]
-        }
-      ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "$"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "STRING",
+            "value": "\""
+          }
+        ]
+      }
     },
     "bareword_string": {
       "type": "PATTERN",
-      "value": "[^0-9'\"$^`*&()\\[\\]@!-+%{}\\s][^'\"$^`*&()\\[\\]@!+%{}\\s]*"
+      "value": "[^0-9'\"$^&|()@\\-%{}\\s][^'\"$^&|()@!%{}\\s]*"
     },
     "comment": {
       "type": "TOKEN",
       "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "PATTERN",
-            "value": "#.*"
-          },
-          {
-            "type": "PATTERN",
-            "value": "<#.*#>"
-          }
-        ]
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "#.*"
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "<#"
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "PATTERN",
+                        "value": "[^<]*"
+                      },
+                      {
+                        "type": "PATTERN",
+                        "value": "<[^#]*"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "STRING",
+                  "value": "#>"
+                }
+              ]
+            }
+          ]
+        }
       }
     }
   },

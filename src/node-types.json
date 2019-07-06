@@ -125,6 +125,11 @@
     "fields": {}
   },
   {
+    "type": "program",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "property_name",
     "named": true,
     "fields": {}
@@ -135,7 +140,7 @@
     "fields": {}
   },
   {
-    "type": "source_file",
+    "type": "single_quote_string",
     "named": true,
     "fields": {}
   },
@@ -261,15 +266,11 @@
     "named": true
   },
   {
-    "type": "single_quote_string",
-    "named": true
-  },
-  {
-    "type": "\"\"",
+    "type": "\"",
     "named": false
   },
   {
-    "type": "\"",
+    "type": "`$",
     "named": false
   },
   {

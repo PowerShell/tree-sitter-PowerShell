@@ -1,3 +1,9 @@
+const PREC = {
+  COMMENT: 1,
+  STRING: 2,
+  NUMBER: 3
+};
+
 module.exports = grammar({
   name: 'PowerShell',
 
@@ -7,18 +13,16 @@ module.exports = grammar({
   ],
 
   rules: {
-    source_file: $ => seq(
+    program: $ => seq(
       optional($.param_block),
-      seq(
-        $._statement,
-        repeat(
-          seq(
-            $._terminator,
-            $._statement
-          )
-        ),
-        optional($._terminator)
+      optional($._statement),
+      repeat(
+        seq(
+          $._terminator,
+          $._statement,
+        )
       ),
+      optional($._terminator)
     ),
 
     _newline: $ => choice(
@@ -513,22 +517,33 @@ module.exports = grammar({
       $.non_type_attribute
     ),
 
-    number_expr: $ => /(\d+|\d*\.\d+(e\d+))u?l?((k|m|g|t)b)?/i,
+    number_expr: $ => token(prec(PREC.NUMBER,
+      seq(
+        choice(
+          /\d+/, // Integers
+          /\d*\.\d+/ // Floats
+        ),
+        optional(/(e|E)\d+/), // Scientific notation
+        optional(/u|U/), // Unsigned
+        optional(/l|L/), // Long
+        optional(/(k|K|m|M|g|G|t|T)(b|B)/) // Disk size notation
+      )
+    )),
 
     _string_expr: $ => choice(
       $.single_quote_string,
       $.double_quote_string
     ),
 
-    single_quote_string: $  => /'[^']*'/,
+    single_quote_string: $  => prec(PREC.STRING, /'[^']*'/),
 
-    double_quote_string: $ => choice(
-      '""',
+    double_quote_string: $ => prec(PREC.STRING,
       seq(
         '"',
         repeat(
           choice(
             /[^"$]+/,
+            '`$',
             $.variable
           )
         ),
@@ -537,11 +552,21 @@ module.exports = grammar({
       )
     ),
 
-    bareword_string: $ => /[^0-9'"$^`*&()\[\]@!-+%{}\s][^'"$^`*&()\[\]@!+%{}\s]*/,
+    bareword_string: $ => /[^0-9'"$^&|()@\-%{}\s][^'"$^&|()@!%{}\s]*/,
 
-    comment: $ => token(choice(
-      /#.*/,
-      /<#.*#>/
-    ))
+    comment: $ => token(prec(PREC.COMMENT,
+      choice(
+        /#.*/,
+        seq(
+          '<#',
+          repeat(
+            choice(
+              /[^<]*/,
+              /<[^#]*/
+            )
+          ),
+          '#>'
+        )
+    )))
   },
 });

@@ -1,0 +1,123 @@
+===
+Plain cmdlet
+===
+
+Write-Something
+
+---
+
+(program
+  (pipeline_statement
+    (command_expression
+      (bareword_string))))
+
+===
+Native command
+===
+
+net.exe
+
+---
+
+(program
+  (pipeline_statement
+    (command_expression
+      (bareword_string))))
+
+===
+Cmdlet with arguments
+===
+
+Write-Output 'Hi'
+
+---
+
+(program
+  (pipeline_statement
+    (command_expression
+      (bareword_string)
+      (command_argument
+        (single_quote_string)))))
+
+===
+Cmdlet with parameters
+===
+
+Write-Output -InputObject 'Hi'
+
+---
+
+(program
+  (pipeline_statement
+    (command_expression
+      (bareword_string)
+      (command_parameter)
+      (command_argument
+        (single_quote_string)))))
+
+===
+Cmdlet with multiple arguments and parameters
+===
+
+Invoke-Thing $argument1 -Parameter 'Thing'
+
+---
+
+(program
+  (pipeline_statement
+    (command_expression
+      (bareword_string)
+      (command_argument
+        (variable
+          (simple_variable)))
+      (command_parameter)
+      (command_argument
+        (single_quote_string)))))
+
+===
+Unix-like native command
+===
+
+git clone -b this_branch --single-branch https://github.com/PowerShell/PowerShell
+
+---
+
+(program
+  (pipeline_statement
+    (command_expression
+      (bareword_string)
+      (command_argument
+        (bareword_string))
+      (command_parameter)
+      (command_argument
+        (bareword_string))
+      (command_parameter)
+      (command_argument
+        (bareword_string)))))
+
+===
+Windows-style native command
+===
+
+net use e: \\usrsvr002\smithmark Ue345Ii /user:pdc01\msmith2 /savecred /p:yes
+
+---
+
+(program
+  (pipeline_statement
+    (command_expression
+      (bareword_string)
+      (command_argument
+        (bareword_string))
+      (command_argument
+        (bareword_string))
+      (command_argument
+        (bareword_string))
+      (command_argument
+        (bareword_string))
+      (command_argument
+        (bareword_string))
+      (command_argument
+        (bareword_string))
+      (command_argument
+        (bareword_string)))))
