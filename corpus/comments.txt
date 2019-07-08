@@ -1,0 +1,104 @@
+===
+Single inline commant
+===
+
+$x = 3
+
+# This is a comment
+
+Get-ChildItem .
+
+---
+
+(program
+  (assignment_statement
+    (variable
+      (simple_variable))
+    (pipeline_statement
+      (number_expr)))
+  (comment)
+  (pipeline_statement
+    (command_expression
+      (bareword_string)
+      (command_argument
+        (bareword_string)))))
+
+===
+Single line block comment
+===
+
+$x = 3
+
+<# Block comment #>
+
+Get-ChildItem .
+
+---
+
+(program
+  (assignment_statement
+    (variable
+      (simple_variable))
+    (pipeline_statement
+      (number_expr)))
+  (comment)
+  (pipeline_statement
+    (command_expression
+      (bareword_string)
+      (command_argument
+        (bareword_string)))))
+
+===
+Multi-line block comment
+===
+
+$x = 3
+
+<#
+
+Here
+
+is a 
+
+longer
+
+comment           #>
+
+Get-ChildItem .
+
+---
+
+(program
+  (assignment_statement
+    (variable
+      (simple_variable))
+    (pipeline_statement
+      (number_expr)))
+  (comment)
+  (pipeline_statement
+    (command_expression
+      (bareword_string)
+      (command_argument
+        (bareword_string)))))
+
+===
+Pathological block comment #1
+===
+
+<##>
+
+---
+
+(program
+  (comment))
+
+===
+Pathological block comment #2
+===
+
+<###>
+
+---
+
+(program
+  (comment))

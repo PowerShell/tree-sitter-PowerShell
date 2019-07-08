@@ -1,0 +1,289 @@
+===
+Integer
+===
+
+239
+
+---
+
+(program
+  (pipeline_statement
+    (number_expr)))
+
+===
+Float
+===
+
+12.9191008
+
+---
+
+(program
+  (pipeline_statement
+    (number_expr)))
+
+===
+Scientific notation
+===
+
+6.022e23
+
+.12E4
+
+---
+
+(program
+  (pipeline_statement
+    (number_expr))
+  (pipeline_statement
+    (number_expr)))
+
+===
+Unsigned
+===
+
+12u
+
+42U
+
+---
+
+(program
+  (pipeline_statement
+    (number_expr))
+  (pipeline_statement
+    (number_expr)))
+
+===
+Byte size suffix
+===
+
+12mb
+
+12GB
+
+---
+
+(program
+  (pipeline_statement
+    (number_expr))
+  (pipeline_statement
+    (number_expr)))
+
+===
+Combined number format
+===
+
+.2e3ulMB
+
+---
+
+(program
+  (pipeline_statement
+    (number_expr)))
+
+===
+Simple variable
+===
+
+$aSimpleVariable001
+
+$91
+
+$__Z
+
+$env:PROGRAM_LOCATION
+
+---
+
+(program
+  (pipeline_statement
+    (variable
+      (simple_variable)))
+  (pipeline_statement
+    (variable
+      (simple_variable)))
+  (pipeline_statement
+    (variable
+      (simple_variable)))
+  (pipeline_statement
+    (variable
+      (simple_variable))))
+
+===
+Special variables
+===
+
+$$
+
+$^
+
+$?
+
+---
+
+(program
+  (pipeline_statement
+    (variable))
+  (pipeline_statement
+    (variable))
+  (pipeline_statement
+    (variable)))
+
+===
+Brace variable
+===
+
+${Simple}
+
+${More-interestin'}
+
+${
+    Really &&
+    quite ^
+    unusual???
+}
+
+---
+
+(program
+  (pipeline_statement
+    (variable))
+  (pipeline_statement
+    (variable))
+  (pipeline_statement
+    (variable)))
+
+===
+Single-quoted string
+===
+
+'Hello, &!@#(&)!I_@U!JJ!EN@!'
+
+---
+
+(program
+  (pipeline_statement
+    (single_quote_string)))
+
+===
+Double-quoted string
+===
+
+"Hello friend! !@!_(@FK@L!:D<!LQ!W(EK!_#(KQ!(%*(@!)"
+
+---
+
+(program
+  (pipeline_statement
+    (double_quote_string)))
+
+===
+Variable substituted string
+===
+
+"Hi $person"
+
+---
+
+(program
+  (pipeline_statement
+    (double_quote_string
+      (variable
+        (simple_variable)))))
+
+===
+Brace-variable substituted string
+===
+
+"He was ${adjective}able"
+
+---
+
+(program
+  (pipeline_statement
+    (double_quote_string
+      (variable))))
+
+===
+Escaped variable in double quoted string
+===
+
+"In the `$money"
+
+---
+
+(program
+  (pipeline_statement
+    (double_quote_string)))
+
+===
+Escaped brace variable in double quoted string
+===
+
+"In the `${money}"
+
+---
+
+(program
+  (pipeline_statement
+    (double_quote_string)))
+
+===
+Basic hashtable
+===
+
+@{
+    Hi = "There"
+}
+
+---
+
+(program
+  (pipeline_statement
+    (hashtable_expression
+      (hashtable_entry
+        (property_name
+            (bareword_string))
+        (double_quote_string)))))
+
+===
+Multi-key hashtable
+===
+
+@{
+    Key1 = "Hi"; Key2 = "There"
+
+    "Key3" = 'Friend'
+
+
+    'Key4' = 'Thing'; $key5 = $result
+}
+
+---
+
+(program
+  (pipeline_statement
+    (hashtable_expression
+      (hashtable_entry
+        (property_name
+          (bareword_string))
+        (double_quote_string))
+      (hashtable_entry
+        (property_name
+          (bareword_string))
+        (double_quote_string))
+      (hashtable_entry
+        (property_name
+          (double_quote_string))
+        (single_quote_string))
+      (hashtable_entry
+        (property_name
+          (single_quote_string))
+        (single_quote_string))
+      (hashtable_entry
+        (property_name
+          (variable
+            (simple_variable)))
+        (variable
+            (simple_variable))))))
