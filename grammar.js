@@ -423,7 +423,7 @@ module.exports = grammar({
       )
     ),
 
-    bareword_string: $ => /[^0-9'"$^&|()@\-%{}\s][^'"$^&|()@!%{}\s]*/,
+    bareword_string: $ => /[^0-9'"$^&|()@\-%{}\[\]\s][^'"$^&|()@!%{}\s]*/,
 
     comment: $ => token(prec(PREC.COMMENT,
       choice(
