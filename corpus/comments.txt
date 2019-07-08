@@ -80,3 +80,27 @@ Get-ChildItem .
       (bareword_string)
       (command_argument
         (bareword_string)))))
+
+===
+Pathological block comment #1
+===
+
+<##>
+
+---
+
+(program
+  (comment))
+
+===
+Pathological block comment #2
+===
+
+<###>
+
+---
+
+(program
+  (comment))
+
+
