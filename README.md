@@ -37,6 +37,7 @@ Parse the [big test file from EditorSyntax](https://github.com/PowerShell/Editor
         * `#sig`
         * Pipeline redirection and jobs
         * Splatting
+        * `&&`/`||`
 - Investigate possibility of dynamic keyword support
         
 
