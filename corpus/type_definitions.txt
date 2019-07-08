@@ -1,0 +1,185 @@
+===
+Simple enum
+===
+
+enum MyEnum
+{
+    One
+}
+
+---
+
+(program
+  (enum_definition
+    (bareword_string)))
+
+===
+More complex enum
+===
+
+enum Enum2
+{
+    Part1; Two
+
+    Three
+
+
+
+    Four
+}
+
+---
+
+(program
+  (enum_definition
+    (bareword_string)
+    (bareword_string)
+    (bareword_string)
+    (bareword_string)))
+
+===
+Basic class
+===
+
+class MyClass {}
+
+---
+
+(program
+  (class_definition))
+
+===
+Class with property
+===
+
+class Class2
+{
+    [string]$Name
+}
+
+---
+
+(program
+  (class_definition
+    (class_property
+      (type_expr)
+      (simple_variable))))
+
+===
+Class with method
+===
+
+class Class2
+{
+    [void]SayHi()
+    {
+        Write-Host "Hi"
+    }
+}
+
+---
+
+(program
+  (class_definition
+    (class_method
+      (type_expr)
+      (bareword_string)
+      (class_method_body
+        (pipeline_statement
+          (command_expression
+            (bareword_string)
+            (command_argument
+              (double_quote_string))))))))
+
+===
+Class with parametered method
+===
+
+class Class2
+{
+    [void]SayHi($Greeting, $Title)
+    {
+        Write-Host "$Greeting, $Title"
+    }
+}
+
+---
+
+(program
+  (class_definition
+    (class_method
+      (type_expr)
+      (bareword_string)
+      (class_parameter
+        (simple_variable))
+      (class_parameter
+        (simple_variable))
+      (class_method_body
+        (pipeline_statement
+          (command_expression
+            (bareword_string)
+            (command_argument
+              (double_quote_string
+                (variable
+                  (simple_variable))
+                (variable
+                  (simple_variable))))))))))
+
+
+===
+Complex class
+===
+
+class Class2
+{
+    [string]$Word
+
+    [void]AnotherMethod()
+    {
+        Write-Host "Nothing"
+    }
+
+    [int]$Number
+
+    [void]SayHi($Greeting, $Title)
+    {
+        Write-Host "$Greeting, $Title"
+    }
+}
+
+---
+
+(program
+  (class_definition
+    (class_property
+      (type_expr)
+      (simple_variable))
+    (class_method
+      (type_expr)
+      (bareword_string)
+      (class_method_body
+      (pipeline_statement
+        (command_expression
+          (bareword_string)
+          (command_argument
+            (double_quote_string))))))
+    (class_property
+      (type_expr)
+      (simple_variable))
+    (class_method
+      (type_expr)
+      (bareword_string)
+      (class_parameter
+        (simple_variable))
+      (class_parameter
+        (simple_variable))
+      (class_method_body
+        (pipeline_statement
+          (command_expression
+            (bareword_string)
+            (command_argument
+              (double_quote_string
+                (variable
+                  (simple_variable))
+                (variable
+                  (simple_variable))))))))))

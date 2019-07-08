@@ -383,3 +383,46 @@ Complex type expression
 (program
   (pipeline_statement
     (type_expr)))
+
+===
+Type-attributed variable
+===
+
+[string]$str
+
+---
+
+(program
+  (pipeline_statement
+    (type_expr)
+    (variable
+      (simple_variable))))
+
+===
+Non-type attributed variable
+===
+
+[MyAttribute()]$var
+
+---
+
+(program
+  (pipeline_statement
+    (non_type_attribute)
+    (variable
+      (simple_variable))))
+
+===
+Double attributed variable
+===
+
+[MyAttribute()][string]$var
+
+---
+
+(program
+  (pipeline_statement
+    (non_type_attribute)
+    (type_expr)
+    (variable
+      (simple_variable))))
