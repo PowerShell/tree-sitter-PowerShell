@@ -25,8 +25,12 @@ if ($Test) {
 }
 
 if ($Parse.Count -gt 0) {
-    $d = if ($TreeSitterDebug) { "-d" } else { "" }
+    $d = if ($TreeSitterDebug) {
+        "parse-debug"
+    } else {
+        "parse"
+    }
     $Parse | ForEach-Object {
-        npm run parse $d $_
+        npm run $d $_
     }
 }
