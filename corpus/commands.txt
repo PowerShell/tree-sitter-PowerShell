@@ -75,6 +75,21 @@ Invoke-Thing $argument1 -Parameter 'Thing'
         (single_quote_string)))))
 
 ===
+Cmdlet with splatted parameters
+===
+
+Invoke-Thing @arguments
+
+---
+
+(program
+  (pipeline_statement
+    (command_expression
+      (bareword_string)
+      (command_argument
+        (splatted_variable)))))
+
+===
 Unix-like native command
 ===
 

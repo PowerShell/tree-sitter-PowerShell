@@ -282,6 +282,7 @@ module.exports = grammar({
       $.number_expr,
       $._string_expr,
       $.variable,
+      $.splatted_variable,
       $.scriptblock,
       $.hashtable_expression,
       $.subpipeline,
@@ -455,6 +456,8 @@ module.exports = grammar({
     ),
 
     simple_variable: $ => /\$[a-zA-Z0-9_:]+/i,
+
+    splatted_variable: $ => /@[a-zA-Z0-9_:]+/i,
 
     _braced_variable: $ => /\${[^}]+}/,
 
