@@ -302,7 +302,6 @@ module.exports = grammar({
 
     hashtable_expression: $ => seq(
       '@{',
-      optional($._statement_terminator),
       repeat(seq($.hashtable_entry, $._statement_terminator)),
       '}'
     ),
