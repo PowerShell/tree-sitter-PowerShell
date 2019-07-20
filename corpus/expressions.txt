@@ -155,6 +155,18 @@ ${
     (variable)))
 
 ===
+Splat variable can't be by itself
+===
+
+@badByItself
+
+---
+
+(program
+  (ERROR 
+    (splatted_variable)))
+
+===
 Single-quoted string
 ===
 

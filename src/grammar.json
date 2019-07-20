@@ -978,6 +978,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "splatted_variable"
+        },
+        {
+          "type": "SYMBOL",
           "name": "scriptblock"
         },
         {
@@ -1544,6 +1548,10 @@
     "simple_variable": {
       "type": "PATTERN",
       "value": "\\$[a-zA-Z0-9_:]+"
+    },
+    "splatted_variable": {
+      "type": "PATTERN",
+      "value": "@[a-zA-Z0-9_:]+"
     },
     "_braced_variable": {
       "type": "PATTERN",

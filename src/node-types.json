@@ -238,6 +238,10 @@
     "named": true
   },
   {
+    "type": "splatted_variable",
+    "named": true
+  },
+  {
     "type": "$$",
     "named": false
   },
