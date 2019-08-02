@@ -7,35 +7,27 @@ const PREC = {
 module.exports = grammar({
   name: 'PowerShell',
 
+  inline: $ => [
+    $._expression,
+    $._non_array_expression,
+    $._expression_statement,
+    $._definition_statement
+  ],
+
+  externals: $ => [
+    $._statement_terminator
+  ],
+
   extras: $ => [
     $.comment,
     /`?\s/,
+    /[\uFEFF\u2060\u200B\u00A0]/
   ],
 
   rules: {
     program: $ => seq(
       optional($.param_block),
-      optional($._statement),
-      repeat(
-        seq(
-          $._terminator,
-          $._statement,
-        )
-      ),
-      optional($._terminator)
-    ),
-
-    _newline: $ => choice(
-      '\r\n',
-      '\n'
-    ),
-
-    _terminator: $ => choice(
-      seq(
-        ';',
-        repeat($._newline)
-      ),
-      repeat1($._newline)
+      statement_sequence($)
     ),
 
     _statement: $ => choice(
@@ -51,27 +43,25 @@ module.exports = grammar({
     ),
 
     function_definition: $ => seq(
-      /function/i,
+      caseInsensitive('function'),
       /[_a-z+][_a-z0-9+]*/i,
       $.scriptblock
     ),
 
     filter_definition: $ => seq(
-      /filter/i,
-      /[_a-z+][_a-z0-9+]*/i,
+      caseInsensitive('filter'),
+      /[_a-zA-Z+][_a-zA-Z0-9+]*/,
       $.scriptblock
     ),
 
     class_definition: $ => seq(
-      /class/i,
-      repeat($._newline),
-      /[a-z_][a-z0-9_]+/,
-      repeat($._newline),
+      caseInsensitive('class'),
+      /[a-zA-Z_][a-zA-Z0-9_]+/,
       '{',
       repeat(
         seq(
           choice(
-            seq($.class_property, $._terminator),
+            seq($.class_property, $._statement_terminator),
             $.class_method
           )
         )
@@ -83,7 +73,6 @@ module.exports = grammar({
       optional(
         seq(
           $.type_expr,
-          repeat($._newline)
         )
       ),
       $.simple_variable
@@ -93,21 +82,18 @@ module.exports = grammar({
       optional($.type_expr),
       $.bareword_string,
       '(',
-      repeat($._newline),
       optional(
         seq(
           $.class_parameter,
           repeat(
             seq(
               ',',
-              repeat($._newline),
               $.class_parameter
             )
           )
         )
       ),
       ')',
-      repeat($._newline),
       $.class_method_body
     ),
 
@@ -118,30 +104,15 @@ module.exports = grammar({
 
     class_method_body: $ => seq(
       '{',
-      repeat(
-        seq(
-          $._statement,
-          $._terminator
-        )
-      ),
+      statement_sequence($),
       '}'
     ),
 
     enum_definition: $ => seq(
-      /enum/i,
-      repeat($._newline),
+      caseInsensitive('enum'),
       /[a-zA-Z_][a-zA-Z0-9_]+/,
-      repeat($._newline),
       '{',
-      repeat($._newline),
-      $.bareword_string,
-      repeat(
-        seq(
-          $._terminator,
-          $.bareword_string,
-        )
-      ),
-      optional($._terminator),
+      delimited_seq($.bareword_string, $._statement_terminator, true, true),
       '}'
     ),
 
@@ -156,7 +127,6 @@ module.exports = grammar({
     assignment_statement: $ => seq(
       $._attributed_variable,
       '=',
-      repeat($._newline),
       $._expression_statement,
     ),
 
@@ -165,98 +135,56 @@ module.exports = grammar({
       repeat(
         seq(
           '|',
-          optional($._newline),
           $.command_expression
         )
       )
     ),
 
     if_statement: $ => seq(
-      /if/i,
-      repeat($._newline),
+      caseInsensitive('if'),
       '(',
-      repeat($._newline),
       $.pipeline_statement,
       ')',
-      repeat($._newline),
       '{',
-      repeat(
-        seq(
-          $._statement,
-          $._terminator
-        ),
-      ),
+      statement_sequence($),
       '}',
       repeat($.elseif_statement),
       optional($.else_statement)
     ),
 
     elseif_statement: $ => seq(
-      /elseif/i,
-      repeat($._newline),
+      caseInsensitive('elif'),
       '(',
-      repeat($._newline),
       $.pipeline_statement,
-      repeat($._newline),
       ')',
-      repeat($._newline),
       '{',
-      repeat(
-        seq(
-          $._statement,
-          $._terminator
-        ),
-      ),
+      statement_sequence($),
       '}'
     ),
 
     else_statement: $ => seq(
-      /else/i,
-      repeat($._newline),
+      caseInsensitive('else'),
       '{',
-      repeat(
-        seq(
-          $._statement,
-          $._terminator
-        ),
-      ),
+      statement_sequence($),
       '}'
     ),
 
     while_statement: $ => seq(
-      /while/i,
-      repeat($._newline),
+      caseInsensitive('while'),
       '(',
-      repeat($._newline),
       $.pipeline_statement,
-      repeat($._newline),
       ')',
-      repeat($._newline),
       '{',
-      repeat(
-        seq(
-          $._statement,
-          $._terminator
-        ),
-      ),
+      statement_sequence($),
       '}'
     ),
 
     do_while_statement: $ => seq(
-      /do/i,
-      repeat($._newline),
+      caseInsensitive('do'),
       '{',
-      repeat($._newline),
-      repeat(
-        seq(
-          $._statement,
-          $._terminator
-        ),
-      ),
+      statement_sequence($),
       '}',
-      repeat($._newline),
-      /while/i,
-      repeat($._newline),
+      caseInsensitive('while'),
       '(',
       $.pipeline_statement,
       ')'
@@ -290,7 +218,7 @@ module.exports = grammar({
     ),
 
     parameter: $ => seq(
-      /-[a-z_][a-z0-9_]*/i,
+      /-[a-zA-Z_][a-zA-Z0-9_]*/i,
       optional(
         seq(
           ':',
@@ -332,47 +260,20 @@ module.exports = grammar({
     scriptblock: $ => seq(
       '{',
       optional($.param_block),
-      repeat($._newline),
-      seq(
-        $._statement,
-        repeat(
-          seq(
-            $._terminator,
-            $._statement
-          )
-        ),
-        optional($._terminator)
-      ),
+      statement_sequence($),
       '}'
     ),
 
     param_block: $ => seq(
-      /param/i,
-      repeat($._newline),
+      caseInsensitive('param'),
       '(',
-      optional(
-        seq(
-          repeat($._newline),
-          $.param_block_variable,
-          repeat(
-            seq(
-              ',',
-              repeat($._newline),
-              $.param_block_variable
-            )
-          ),
-        )
-      ),
-      repeat($._newline),
+      delimited_seq($.param_block_variable, ','),
       ')'
     ),
 
     param_block_variable: $ => seq(
       repeat(
-        seq(
-          $._attribute,
-          repeat($._newline)
-        )
+        $._attribute,
       ),
       $.simple_variable
     ),
@@ -395,44 +296,19 @@ module.exports = grammar({
 
     flat_array_expression: $ => seq(
       '@(',
-      repeat($._newline),
-      optional(
-        seq(
-          $._expression,
-          repeat(
-            seq(
-              $._terminator,
-              $._expression
-            )
-          ),
-          repeat($._newline)
-        )
-      ),
+      delimited_seq($._expression, $._statement_terminator),
       ')'
     ),
 
     hashtable_expression: $ => seq(
       '@{',
-      repeat($._newline),
-      optional(
-        seq(
-          $.hashtable_entry,
-          repeat(
-            seq(
-              $._terminator,
-              $.hashtable_entry
-            )
-          ),
-          optional($._terminator)
-        )
-      ),
+      repeat(seq($.hashtable_entry, $._statement_terminator)),
       '}'
     ),
 
     hashtable_entry: $ => seq(
       $.property_name,
       '=',
-      repeat($._newline),
       $._expression
     ),
 
@@ -503,14 +379,7 @@ module.exports = grammar({
       '[',
       $._typename_simple,
       '(',
-      optional(
-        seq(
-          $._non_array_expression,
-          repeat(
-            seq(',', $._non_array_expression)
-          )
-        )
-      ),
+      delimited_seq($._non_array_expression, ','),
       ')',
       ']'
     ),
@@ -572,3 +441,61 @@ module.exports = grammar({
     )))
   },
 });
+
+function caseInsensitive (keyword) {
+  return new RegExp(keyword
+    .split('')
+    .map(letter => `[${letter}${letter.toUpperCase()}]`)
+    .join('')
+  )
+}
+
+function statement_sequence($)
+{
+  return repeat(
+    seq(
+      $._statement,
+      $._statement_terminator
+    )
+  )
+}
+
+function delimited_seq(rule, delimeter, oneOrMore, canFollowLast)
+{
+  if (canFollowLast)
+  {
+    if (oneOrMore)
+    {
+      return repeat1(
+        seq(
+          rule,
+          delimeter
+        )
+      );
+    }
+
+    return repeat(
+      seq(
+        rule,
+        delimeter
+      )
+    );
+  }
+
+  let body = choice(
+    rule,
+    seq(
+      rule,
+      repeat(
+        seq(
+          delimeter,
+          rule
+        )
+      )
+    )
+  );
+
+  return oneOrMore
+    ? body
+    : optional(body);
+}
