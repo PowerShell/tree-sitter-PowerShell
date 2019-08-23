@@ -1,5 +1,12 @@
 # PowerShell support for tree-sitter
 
+A [tree-sitter](http://tree-sitter.github.io/tree-sitter/)
+implemenation for [PowerShell](https://github.com/PowerShell/PowerShell).
+
+## License
+
+See [LICENSE](LICENSE).
+
 ## Initial goal
 
 Parse the [big test file from EditorSyntax](https://github.com/PowerShell/EditorSyntax/blob/master/examples/TheBigTestFile.ps1) completely.

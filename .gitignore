@@ -1,6 +1,7 @@
 node_modules
 *.swp
 build
+*.gyp
 
 # see https://stackoverflow.com/a/5534865
 !src/
