@@ -1,0 +1,337 @@
+===
+Simple binary operator 1
+===
+
+$a -eQ $a
+
+---
+
+(program
+    (binary_operator_statement
+		(variable (simple_variable))
+		(binary_operator)
+		(variable (simple_variable))
+	)
+)
+
+===
+Simple binary operator 2
+===
+
+$a -ne $a
+
+---
+
+(program
+    (binary_operator_statement
+		(variable (simple_variable))
+		(binary_operator)
+		(variable (simple_variable))
+	)
+)
+
+===
+Simple binary operator 3
+===
+
+$a -ge $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 4
+===
+
+$a -gt $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 5
+===
+
+$a -lt $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 6
+===
+
+$a -le $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 7
+===
+
+$a -like $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 8
+===
+
+$a -notlike $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 9
+===
+
+$a -match $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 10
+===
+
+$a -notmatch $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 11
+===
+
+$a -replace $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 12
+===
+
+$a -contains $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 13
+===
+
+$a -notcontains $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 14
+===
+
+$a -in $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 15
+===
+
+$a -notin $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 16
+===
+
+$a -split $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 17
+===
+
+$a -join $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 18
+===
+
+$a -is $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 19
+===
+
+$a -isnot $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+
+
+===
+Simple binary operator 20
+===
+
+$a -as $a
+
+---
+
+(program
+    (binary_operator_statement
+        (variable (simple_variable))
+        (binary_operator)
+        (variable (simple_variable))
+    )
+)
+

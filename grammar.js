@@ -125,6 +125,7 @@ module.exports = grammar({
 
     _expression_statement: $ => choice(
       $.assignment_statement,
+      $.binary_operator_statement,
       $.pipeline_statement,
       $.if_statement,
       $.while_statement,
@@ -160,7 +161,7 @@ module.exports = grammar({
     ),
 
     elseif_statement: $ => seq(
-      caseInsensitive('elif'),
+      caseInsensitive('elseif'),
       '(',
       $.pipeline_statement,
       ')',
@@ -319,6 +320,35 @@ module.exports = grammar({
       $._expression
     ),
 
+    binary_operator: $ => choice(
+      caseInsensitive('-eq'),
+      caseInsensitive('-ne'),
+      caseInsensitive('-ge'),
+      caseInsensitive('-gt'),
+      caseInsensitive('-lt'),
+      caseInsensitive('-le'),
+      caseInsensitive('-like'),
+      caseInsensitive('-notlike'),
+      caseInsensitive('-match'),
+      caseInsensitive('-notmatch'),
+      caseInsensitive('-replace'),
+      caseInsensitive('-contains'),
+      caseInsensitive('-notcontains'),
+      caseInsensitive('-in'),
+      caseInsensitive('-notin'),
+      caseInsensitive('-split'),
+      caseInsensitive('-join'),
+      caseInsensitive('-is'),
+      caseInsensitive('-isnot'),
+      caseInsensitive('-as'),
+    ),
+
+    binary_operator_statement: $ => seq(
+      $.variable,
+      $.binary_operator,
+      $._expression
+    ),
+
     property_name: $ => choice(
       $._string_expr,
       $.bareword_string,
@@ -336,6 +366,10 @@ module.exports = grammar({
         $._braced_variable,
         $._special_variable
       )
+    ),
+
+    _newline: $ => choice(
+      '\n'
     ),
 
     simple_variable: $ => /\$[a-zA-Z0-9_:]+/i,
@@ -457,6 +491,15 @@ function caseInsensitive (keyword) {
   )
 }
 
+function caseInsensitiveOperator(operator) {
+  re = new RegExp(operator
+    .split('')
+    .map(letter => `[${letter}${letter.toUpperCase()}]`)
+    .join('')
+  );
+  return '-[Cc]?' + re;
+}
+
 function statement_sequence($)
 {
   return repeat(
@@ -467,7 +510,7 @@ function statement_sequence($)
   )
 }
 
-function delimited_seq(rule, delimeter, oneOrMore, canFollowLast)
+function delimited_seq(rule, delimiter, oneOrMore, canFollowLast)
 {
   if (canFollowLast)
   {
@@ -476,7 +519,7 @@ function delimited_seq(rule, delimeter, oneOrMore, canFollowLast)
       return repeat1(
         seq(
           rule,
-          delimeter
+          delimiter
         )
       );
     }
@@ -484,7 +527,7 @@ function delimited_seq(rule, delimeter, oneOrMore, canFollowLast)
     return repeat(
       seq(
         rule,
-        delimeter
+        delimiter
       )
     );
   }
@@ -495,7 +538,7 @@ function delimited_seq(rule, delimeter, oneOrMore, canFollowLast)
       rule,
       repeat(
         seq(
-          delimeter,
+          delimiter,
           rule
         )
       )
