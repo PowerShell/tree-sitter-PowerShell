@@ -1,0 +1,44 @@
+===
+Simple branch 1
+===
+
+if ( $true ) { }
+
+---
+
+(program
+  (if_statement
+    (pipeline_statement
+      (variable
+        (simple_variable)))))
+
+===
+Simple branch 2
+===
+
+if ( $true )
+{
+}
+
+---
+
+(program
+  (if_statement
+    (pipeline_statement
+      (variable
+        (simple_variable)))))
+
+===
+Simple branch 3
+===
+
+if($true){
+}
+
+---
+
+(program
+  (if_statement
+    (pipeline_statement
+      (variable
+        (simple_variable)))))
