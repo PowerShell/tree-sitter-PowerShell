@@ -3,6 +3,8 @@ node_modules
 build
 *.gyp
 
+bindings/*
+
 # see https://stackoverflow.com/a/5534865
 !src/
 src/*
