@@ -38,7 +38,7 @@ enum Enum2
     (bareword_string)))
 
 ===
-Basic class
+Basic class 1
 ===
 
 class MyClass {}
@@ -49,21 +49,34 @@ class MyClass {}
   (class_definition))
 
 ===
-Class with property
+Basic class 2
 ===
 
-class Class2
+class MyClass
 {
-    [string]$Name
+
 }
 
 ---
 
 (program
-  (class_definition
+  (class_definition))
+
+===
+Class with property
+===
+class Class2
+{
+    [string]$Name
+}
+---
+
+ (program
+   (class_definition
     (class_property
       (type_expr)
       (simple_variable))))
+
 
 ===
 Class with method
