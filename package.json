@@ -17,5 +17,17 @@
   },
   "devDependencies": {
     "tree-sitter-cli": "^0.15.2"
-  }
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.powershell",
+      "file-types": [
+        ".ps1",
+        ".psd1",
+        ".psm1"
+      ],
+      "injection-regex": "(powershell|pwsh)",
+      "first-line-regex": "^#!.*\b(powershell|pwsh)\b.*$"
+    }
+  ]
 }
